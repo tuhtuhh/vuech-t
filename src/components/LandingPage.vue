@@ -15,7 +15,7 @@ export default {
   props: ['auth'],
   data() {
     return {
-      landMsg: 'Tere... Super Salajane Chat',
+      landMsg: 'chät',
       landingBtnMsg: 'Logi Sisse',
     };
   },

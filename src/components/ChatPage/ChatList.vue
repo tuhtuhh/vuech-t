@@ -22,7 +22,7 @@
         v-if="item.user == myAccount.uid"
         v-text="new Date(item.time).toLocaleString()" />
 
-      <div class="content" v-html="item.content" @click="contentClick"></div>
+      <div class="content" v-html="item.content" ></div>
 
       <span class="time" 
         v-if="item.user != myAccount.uid"
@@ -34,7 +34,7 @@
 
 <script>
 /* eslint-disable */
-import { mapState, mapActions } from 'vuex';
+import { mapState  } from 'vuex';
 import _ from 'lodash';
 
 export default {
@@ -55,19 +55,6 @@ export default {
       return this.app.myAccount;
     }
   },
-  methods: {
-    ...mapActions('modals', {
-      openModal: 'open',
-      viewOriginal: 'viewOriginal'
-    }),
-    contentClick(e) {
-      // when img Click
-      if(e.target.childNodes[0].localName == 'img'){
-        this.viewOriginal(e.target.childNodes[0].src);
-        this.openModal('viewOriginal');
-      }
-    }
-  }
 }
 </script>
 

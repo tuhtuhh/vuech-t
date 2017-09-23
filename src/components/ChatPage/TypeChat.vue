@@ -14,7 +14,7 @@
 
 <script>
 /* eslint-disable */
-import { mapActions } from 'vuex'
+
 
 export default {
   name: 'typeChat',
@@ -28,9 +28,7 @@ export default {
 
   },
   methods: {
-    ...mapActions('modals', {
-      openModal: 'open'
-    }),
+
     beforeSendChat(value) {
       this.sendChat(value);
       this.newChat = '';
@@ -41,7 +39,7 @@ export default {
 
 <style scoped>
 .type-chat {
-  position: absolute;
+  position: relative ;
   bottom: 0;
   height: 5rem;
   width: 100%;
