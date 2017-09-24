@@ -3,7 +3,9 @@
     <chat-page-header />
 
     <div class="gifs">
-      <action :data="chatList"/>
+      <action 
+        :data="chatList"
+        :userList="userList"/>
     </div>
     <div class="chat">
       <chat-list 
@@ -47,11 +49,13 @@ export default {
     userList: users,
     onlineList: online,
   },
+
   computed: {
     ...mapState([
       'app',
       'modals',
     ]),
+
     myAccount() {
       return this.app.myAccount;
     },

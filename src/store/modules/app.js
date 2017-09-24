@@ -9,6 +9,7 @@ export default {
   state: {
     auth: true,
     myAccount: {},
+
   },
   mutations: {
     SET_AUTH(state, value) {
