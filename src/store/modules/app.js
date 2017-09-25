@@ -9,6 +9,7 @@ export default {
   state: {
     auth: true,
     myAccount: {},
+    newGifs: { newGif: 'asd'},
 
   },
   mutations: {
@@ -27,6 +28,9 @@ export default {
       Firebase.auth().signOut();
       state.myAccount = {};
     },
+    SHOWGIF(state, payload) {
+      state.newGifs = payload
+    }
   },
   actions: {
     checkAuth({ commit }) {
@@ -54,6 +58,20 @@ export default {
     logout({ commit }) {
       commit('LOGOUT');
     },
+    newGifis({commit}, payload){
+      const news = {
+        newgif: payload.newgif,
+      }
+
+      commit('SHOWGIF',{
+        ...news
+      });
+    }
   },
+  getters: {
+    gigs(state) {
+      return state.newGifs
+    }
+  }
 };
 

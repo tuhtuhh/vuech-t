@@ -4,7 +4,7 @@
       type="text" 
       v-model="newChat" 
       @keyup.enter="beforeSendChat(newChat)"
-      placeholder="Alusta chättimist...">
+      placeholder="Type /funnycat or somerthing...">
     <div class="btn-group">
 
       <button @click="beforeSendChat(newChat)" >Saada</button>    
@@ -30,8 +30,16 @@ export default {
   methods: {
 
     beforeSendChat(value) {
+      const newVal = {
+        newgif: value,
+      }
+      this.$store.dispatch('newGifis', newVal)
+
       this.sendChat(value);
       this.newChat = '';
+      
+ 
+
     }
   },
 }

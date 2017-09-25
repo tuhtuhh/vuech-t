@@ -1,31 +1,35 @@
 <template>
+  <div>
+ <chat-page-header />
   <div class="chat-page">
-    <chat-page-header />
-
     <div class="gifs">
-      <action 
-        :data="chatList"
-        :userList="userList"/>
+      <div class="wrapper">
+        <div v-for="gif in gifs" :key="gif.id">
+          <img class="gif" :src="gif.images.original.url" alt="">
+        </div>
+        <div>
+          {{ tests }}
+        </div>
+      </div>
     </div>
+    
     <div class="chat">
-      <chat-list 
-        :data="chatList"
-        :userList="userList"
-      />
-      <type-chat :sendChat="sendChat"/>
+      <chat-list :data="chatList" :userList="userList" />
+      <type-chat :sendChat="sendChat" />
     </div>
+  </div>
   </div>
 </template>
 
 <script>
 
-/* eslint-disable */ 
+/* eslint-disable */
 import { mapState, mapGetters, mapActions } from 'vuex'
 import Firebase from '../../firebaseHelper'
 import ChatPageHeader from './Header';
 import ChatList from './ChatList'
 import TypeChat from './TypeChat'
-import Action from './Action'
+
 
 // firebase
 const database = Firebase.database();
@@ -49,6 +53,17 @@ export default {
     userList: users,
     onlineList: online,
   },
+  data() {
+    return {
+      gifs: [],
+      test: 'test',
+      newBtn: '',
+      buttons: [
+        { text: 'test' },
+
+      ],
+    }
+  },
 
   computed: {
     ...mapState([
@@ -62,10 +77,48 @@ export default {
     online() {
       return this.onlineList.length;
     },
+    tests() {
+      const keys = Object.keys(this.chatList)
+      const index = 1;
+      if (index >= keys.length) {
+        this.test = 'hello'
+        this.load()
+        return
+      } else {
+        const last = keys[keys.length - 1]
+        const lastChat = this.chatList[last].content
+        const removedDiv = lastChat.replace(/^<div[^>]*>|<\/div>$/g, '');
+        this.test = removedDiv;
+        if(this.test[0] == "/")
+        this.load()
+      } 
+    },
+
+
+
+
+  },
+  mounted() {
+
+
   },
   methods: {
+    load() {
+      fetch(`https://api.giphy.com/v1/gifs/search?api_key=0e416030e0dd497196dfbe570c5fc692&q=${this.test}&limit=1&offset=0&rating=R&lang=en`)
+        .then(res => res.json())
+        .then((result) => {
+          this.gifs = result.data
+        });
+    },
+
+    addBtn() {
+      this.buttons.push({
+        text: this.newBtn,
+      })
+    },
+
     sendChat(data) {
-      if(data != ''){
+      if (data != '') {
         this.pushChat(`<div>${XSSfilter(data)}</div>`);
         this.newChat = '';
       }
@@ -81,38 +134,52 @@ export default {
         scrollBottom();
       });
 
-    },    
+    },
   },
   components: {
     ChatPageHeader,
     ChatList,
     TypeChat,
-    Action
   }
 }
 </script>
 
 <style scoped>
 /* template css */
+
 .chat-page {
-  position: relative;
-  display: inline-block;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
   background-color: #f2f2f2;
   color: #2f2f2f;
+
 }
 
 .chat {
-  position: absolute;
-  right: 0px;
-  width: 50%;
+  flex-basis: 50%
 }
+
 .gifs {
-  position: absolute;
-  left: 0px;
-  width: 50%;
+  flex-basis: 50%
 }
+
+
+.wrapper {
+  margin-left: 100px;
+  width: 560px;
+}
+
+
+
+
+
+.gif {
+  margin-top: 20px;
+  max-height: 500px;
+  min-height: 450px;
+  max-width: 500px;
+  min-width: 450px
+}
+
 
 </style>
